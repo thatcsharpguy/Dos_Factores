@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using DosFactores.Data;
 using DosFactores.Models;
 using DosFactores.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace DosFactores
 {
@@ -39,6 +41,12 @@ namespace DosFactores
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Enforce SSL
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -59,6 +67,10 @@ namespace DosFactores
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            // Requires using Microsoft.AspNetCore.Rewrite;
+            var options = new RewriteOptions()
+                .AddRedirectToHttps();
 
             if (env.IsDevelopment())
             {
