@@ -392,6 +392,10 @@ namespace DosFactores.Controllers
             {
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
             }
+            else if (model.SelectedProvider == "GoogleAuthenticator")
+            {
+                // Do nothing
+            }
 
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }

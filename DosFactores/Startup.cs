@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using DosFactores.Data;
 using DosFactores.Models;
 using DosFactores.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 
@@ -53,6 +54,7 @@ namespace DosFactores
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddTokenProvider(GoogleAuthenticatorProvider.ProviderName, typeof(GoogleAuthenticatorProvider))
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
